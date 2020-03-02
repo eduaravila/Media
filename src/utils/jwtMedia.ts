@@ -6,13 +6,11 @@ class Token {
   data: any;
   token: string;
   configuration_token = {
-    algorithm: "RS256"
+    algorithm: "HS256"
   };
 
   constructor(data: object) {
     this.data = {
-      issuer: process.env.AUTOR,
-      audience: process.env.APP_NAME,
       ...data
     };
     this.token = "";
@@ -49,20 +47,19 @@ class Token {
       }
     };
   }
-  
-  create_token(expiresIn: string = "24h", keyid: string, privateKey: string) {
+
+  create_token(expiresIn: string = "24h") {
     return new Promise(async (resolve, reject) => {
       this.data = { ...(await this._crypt_data()()) };
 
       try {
-        this.token = await jwt.sign(this.data, privateKey, {
-          algorithm: "RS256",
+        this.token = await jwt.sign(this.data, process.env.SECRET_MEDIA, {
+          algorithm: "HS256",
           expiresIn,
-          keyid,
           issuer: process.env.APP_NAME,
           audience: "GENERAL"
         });
-        
+
         resolve(this.token);
       } catch (error) {
         reject(error);
@@ -70,9 +67,9 @@ class Token {
     });
   }
 
-  static validateToken(token: string, publicKey: string) {
+  static validateToken(token: string) {
     try {
-      return Promise.resolve(jwt.verify(token, publicKey));
+      return Promise.resolve(jwt.verify(token, process.env.SECRET_MEDIA));
     } catch (err) {
       return Promise.reject(err);
     }

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const connect_db = async () => {
   try {
     mongoose.set("useCreateIndex", true);
-    let db = await mongoose.connect(`mongodb://127.0.0.1:27017/challenge`, {
+    let db = await mongoose.connect(`mongodb://127.0.0.1:27017/media`, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });

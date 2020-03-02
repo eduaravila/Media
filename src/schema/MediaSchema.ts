@@ -14,6 +14,7 @@ import {
   SanitizerInterface,
   Sanitize
 } from "class-sanitizer";
+import mediaModel from "../models/media";
 
 @SanitizerConstraint()
 export class toLowerCase implements SanitizerInterface {
@@ -33,12 +34,18 @@ export class SuccessResponse {
 
 @Directive(`@key(fields:"_id")`)
 @ObjectType()
-export class File {
-  @Field(type => String, { nullable: false })
-  _id: string;
+export class Media {
+  @Field(type => ID, { nullable: false })
+  _id: mongoose.Types.ObjectId;
 
   @Field(type => String, { nullable: true })
   name: string;
+
+  @Field(type => String, { nullable: true })
+  original_name: string;
+
+  @Field(type => String, { nullable: true })
+  link: string;
 
   @Field(type => String, { nullable: true })
   created_at: string;
@@ -65,4 +72,12 @@ export class findInput {
   @Trim()
   @Sanitize(toLowerCase)
   search: string;
+}
+
+export async function resolveMediaReference(
+  reference: Pick<Media, "_id">
+): Promise<Media> {
+  let result = await mediaModel.findOne({ _id: reference._id });
+
+  return result;
 }

@@ -1,180 +1,158 @@
 import moment from "moment";
 import { ApolloError } from "apollo-server-express";
-import { createWriteStream, unlink } from "fs";
+import { createWriteStream, existsSync, mkdirSync, unlinkSync } from "fs";
 import path from "path";
 import os from "os";
+import { v4 } from "uuid";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
+import sharp from "sharp";
+import { validationResult } from "express-validator";
+import mediaModel from "../models/media";
 
-import challengeModel from "../models/challenge";
 import { findInput } from "../schema/MediaSchema";
 import JwtAdmin from "../utils/jwtAdmin";
+import JwtMedia from "../utils/jwtMedia";
+import { media_dir } from "../utils/dirs";
 import { decrypt, encrypt } from "../utils/crypt";
 
 export const addMedia = async (file: FileUpload, ctx: any) => {
   try {
     let token = ctx.req.headers.token;
 
-    let localToken = await JwtAdmin.validateToken(token);
+    let localToken = await JwtMedia.validateToken(token);
 
-    let tokenData: any = await JwtAdmin.decrypt_data(localToken)();
-    if (ctx.req.ipInfo.error) {
-      ctx.req.ipInfo = {};
+    let tokenData: any = await JwtMedia.decrypt_data(localToken)();
+
+    const { createReadStream, filename, mimetype } = await file;
+
+    console.log(createReadStream);
+
+    const semiTransparentRedPng = sharp()
+      .resize(1200)
+      .png();
+
+    let final = ".png";
+    if (mimetype == "image/png") {
+      final = ".png";
+    } else if (mimetype == "image/jpg") {
+      final = ".jpg";
+    } else if (mimetype == "image/jpeg") {
+      final = ".jpeg";
     }
 
-    let {
-      country = "",
-      region = "",
-      city = "",
-      timezone = "",
-      ll = []
-    } = ctx.req.ipInfo;
-
-    const { createReadStream, filename } = await file;
-
-    const destinationPath = path.join(os.tmpdir(), filename);
+    let newFileName = v4() + final;
+    const destinationPath = path.join(media_dir(), newFileName);
 
     const url = await new Promise((res, rej) =>
       createReadStream()
+        .pipe(semiTransparentRedPng)
         .pipe(createWriteStream(destinationPath))
         .on("error", rej)
-        .on("finish", () => {
-          // Do your custom business logic
-
-          // Delete the tmp file uploaded
-          unlink(destinationPath, () => {
-            res("your image url..");
-          });
+        .on("finish", async () => {
+          res(newFileName);
         })
     );
+    let newMedia = await new mediaModel({
+      original_name: filename,
+      name: newFileName,
+      created_by: tokenData.userId,
+      updated_by: tokenData.userId,
+      link: newFileName
+    });
+    await newMedia.save();
 
-    return Promise.resolve({ msg: "File added succesfully", code: "200" });
+    return Promise.resolve({
+      msg: newMedia.link.toString(),
+      code: "200"
+    });
   } catch (error) {
     console.log(error);
 
-    return new ApolloError(error);
+    throw new ApolloError(error);
   }
 };
 
-// export const getChallenges = async ({
-//   page = 0,
-//   size = 0,
-//   search
-// }: findInput) => {
-//   try {
-//     let offset = page * size;
-//     let limit = offset + size;
+export const getMedia = async ({ page = 0, size = 0, search }: findInput) => {
+  try {
+    let offset = page * size;
+    let limit = offset + size;
 
-//     let result =
-//       search.length > 0
-//         ? await challengeModel
-//             .find({
-//               $or: [
-//                 { title: { $regex: ".*" + search + ".*" } },
-//                 { _id: { $regex: ".*" + search + ".*" } },
-//                 { arena: { $regex: ".*" + search + ".*" } }
-//               ]
-//             })
-//             .skip(offset)
-//             .limit(limit)
-//             .lean()
-//         : await challengeModel
-//             .find({})
-//             .skip(offset)
-//             .limit(limit)
-//             .lean();
-//     let descripted_result = result.map(i => ({
-//       ...i,
-//       points: decrypt(i.points)
-//     }));
-//     return Promise.resolve(descripted_result);
-//   } catch (error) {
-//     new ApolloError(error);
-//   }
-// };
+    let result =
+      search.length > 0
+        ? await mediaModel
+            .find({
+              $or: [{ name: { $regex: ".*" + search + ".*" } }]
+            })
+            .skip(offset)
+            .limit(limit)
+        : await mediaModel
+            .find({})
+            .skip(offset)
+            .limit(limit);
 
-// export const deleteChallenge = async ({ id }: any, ctx: any) => {
-//   try {
-//     let token = ctx.req.headers.token;
+    return Promise.resolve(result);
+  } catch (error) {
+    console.log(error);
 
-//     let localToken = await JwtAdmin.validateToken(token);
+    throw new ApolloError(error);
+  }
+};
 
-//     let tokenData: any = await JwtAdmin.decrypt_data(localToken)();
+export const deleteMedia = async ({ id }: any, ctx: any) => {
+  try {
+    let token = ctx.req.headers.token;
 
-//     let deletedChallenge = await challengeModel.delete(
-//       { $and: [{ _id: id }, { created_by: tokenData.userId }] },
-//       tokenData.userId
-//     );
+    let localToken = await JwtAdmin.validateToken(token);
 
-//     return Promise.resolve(`${deletedChallenge._id} succesfully created`);
-//   } catch (error) {
-//     new ApolloError(error);
-//   }
-// };
+    let tokenData: any = await JwtAdmin.decrypt_data(localToken)();
 
-// export const modifyChallenge = async (
-//   {
-//     id,
-//     title,
-//     subtitle,
-//     badges,
-//     points,
-//     rarity,
-//     description,
-//     portrait,
-//     arena,
-//     gendre,
-//     minAge
-//   }: ModifyChallenge,
-//   ctx: any
-// ) => {
-//   try {
-//     if (ctx.req.ipInfo.error) {
-//       ctx.req.ipInfo = {};
-//     }
+    let deletedMedia = await mediaModel.delete(
+      { $and: [{ _id: id }] },
+      tokenData.userId
+    );
+    await unlinkSync(path.join(media_dir(), deletedMedia.name));
 
-//     let {
-//       country = "",
-//       region = "",
-//       city = "",
-//       timezone = "",
-//       ll = []
-//     } = ctx.req.ipInfo;
+    return Promise.resolve({
+      msg: id + "Succesfully deleted",
+      code: "200"
+    });
+  } catch (error) {
+    new ApolloError(error);
+  }
+};
 
-//     let token = ctx.req.headers.token;
-//     let localToken = await JwtAdmin.validateToken(token);
+export const get_image = async (req: any, res: any, next: any) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+    console.log("send file");
 
-//     let tokenData: any = await JwtAdmin.decrypt_data(localToken)();
-//     let pointsEncripted = points ? encrypt(points.toString()) : undefined;
+    let { id } = req.params;
+    let path_image = path.join(media_dir(), id);
 
-//     let updatedChallenge = await challengeModel.findByIdAndUpdate(
-//       id,
-//       {
-//         title,
-//         subtitle,
-//         badges,
-//         points: pointsEncripted,
-//         rarity,
-//         created_by: tokenData.userId,
-//         updated_by: tokenData.userId,
-//         description,
-//         portrait,
-//         arena,
-//         gendre,
-//         minAge,
-//         updated_at: moment().format("YYYY-MM-DD/HH:mm:ZZ"),
-//         location: {
-//           country,
-//           region,
-//           city,
-//           timezone,
-//           ll
-//         }
-//       },
-//       { omitUndefined: true }
-//     );
+    if (existsSync(path_image)) {
+      res.sendFile(path_image);
+    } else
+      res.status(404).send({
+        msg: "Image not found",
+        code: "404"
+      });
+  } catch (error) {
+    res.status(404).send({
+      msg: "Image not found",
+      code: "404"
+    });
+  }
+};
 
-//     return Promise.resolve(`${updatedChallenge._id} succesfully updated`);
-//   } catch (error) {
-//     throw new ApolloError(error);
-//   }
-// };
+export const make_media_dir = async () => {
+  try {
+    if (await !existsSync(media_dir())) {
+      return await mkdirSync(media_dir());
+    }
+  } catch (error) {
+    throw error;
+  }
+};
