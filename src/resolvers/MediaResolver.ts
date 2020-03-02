@@ -9,19 +9,51 @@ import {
 } from "type-graphql";
 
 import { GraphQLUpload, FileUpload } from "graphql-upload";
-import { SuccessResponse, Media, findInput } from "../schema/MediaSchema";
-import { addMedia, getMedia, deleteMedia } from "../controllers/media";
+import {
+  SuccessResponse,
+  Media,
+  findInput,
+  SuccessResponseArray,
+  SuccessResponseTicket
+} from "../schema/MediaSchema";
+import {
+  addMedia,
+  getMedia,
+  deleteMedia,
+  addMediaAdmin,
+  addArticleAdmin
+} from "../controllers/media";
 import { ApolloError } from "apollo-server-express";
 
 @Resolver()
 export class MediaResolver {
-  @Mutation(() => SuccessResponse)
+  @Mutation(() => SuccessResponseTicket)
   async uploadImage(
-    @Arg("file", () => GraphQLUpload)
-    file: FileUpload,
+    @Arg("file", () => [GraphQLUpload])
+    files: [FileUpload],
     @Ctx() ctx: any
-  ): Promise<SuccessResponse | ApolloError> {
-    return await addMedia(file, ctx);
+  ) {
+    return await addMedia(files, ctx);
+  }
+
+  @Authorized("ADMIN")
+  @Mutation(() => SuccessResponseArray)
+  async uploadImageAdmin(
+    @Arg("file", () => [GraphQLUpload])
+    files: [FileUpload],
+    @Ctx() ctx: any
+  ) {
+    return await addMediaAdmin(files, ctx);
+  }
+
+  @Authorized("ADMIN")
+  @Mutation(() => SuccessResponseArray)
+  async uploadArticleAdmin(
+    @Arg("file", () => [GraphQLUpload])
+    files: [FileUpload],
+    @Ctx() ctx: any
+  ) {
+    return await addArticleAdmin(files, ctx);
   }
 
   @Authorized()

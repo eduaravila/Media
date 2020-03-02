@@ -32,6 +32,27 @@ export class SuccessResponse {
   code?: string;
 }
 
+@ObjectType()
+export class SuccessResponseArray {
+  @Field(type => [String])
+  msg?: [string];
+
+  @Field(type => String)
+  code?: string;
+}
+
+@ObjectType()
+export class SuccessResponseTicket {
+  @Field(type => [String])
+  msg?: [string];
+
+  @Field(type => String)
+  token?: string;
+
+  @Field(type => String)
+  code?: string;
+}
+
 @Directive(`@key(fields:"_id")`)
 @ObjectType()
 export class Media {
