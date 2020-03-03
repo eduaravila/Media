@@ -197,8 +197,6 @@ export const addMedia = async (files: [FileUpload], ctx: any) => {
       token: ticketToken.token
     });
   } catch (error) {
-    console.log(error);
-
     throw new ApolloError(error);
   }
 };
@@ -223,8 +221,6 @@ export const getMedia = async ({ page = 0, size = 0, search }: findInput) => {
 
     return Promise.resolve(result);
   } catch (error) {
-    console.log(error);
-
     throw new ApolloError(error);
   }
 };
@@ -310,7 +306,6 @@ export const get_article = async (req: any, res: any, next: any) => {
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-    console.log("send file");
 
     let { id } = req.params;
     let path_image = path.join(articles_dir(), id);
