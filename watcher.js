@@ -9,27 +9,31 @@ const watcher = chokidar.watch(path.join("."), {
 });
 
 const log = console.log.bind(console);
-const restart_server = async () => {
-  await exec(`fuser -k ${process.env.PORT}/tcp`);
-  await exec(`rm -rf node_modules`);
-  await exec(`rm -f package-lock.json`);
-  await exec(`npm i`);
-  await exec(`tsc`);
-  await exec(`npm start`);
-  log("All good");
-  return Promise.resolve(true);
+const restart_server = () => {
+  return exec(`fuser -k ${process.env.PORT}/tcp`, () => {
+    exec(`rm -rf node_modules`, () => {
+      exec(`rm -f package-lock.json`, () => {
+        exec(`npm i`, () => {
+          exec(`tsc`, () => {
+            exec(`npm start`, (err, out) => {
+              return out;
+            });
+          });
+        });
+      });
+    });
+  });
 };
 
 const start_server = async () => {
   const { stdout, stderr } = await exec(`npm i`, { shell: true });
   log(stdout);
 
-  exec(`tsc`, { shell: true }, async () => {
+  return exec(`tsc`, { shell: true }, async () => {
     const logServer = await (await exec(`npm start`, { shell: true })).stdout;
     log("All good", logServer);
+    return Promise.resolve(logServer);
   });
-
-  return Promise.resolve(true);
 };
 
 let ready = false;
@@ -55,6 +59,6 @@ watcher
     log(`File ${path} has been removed`);
   })
   .on("ready", async () => {
-    await start_server();
+    log(await restart_server());
     ready = true;
   });
