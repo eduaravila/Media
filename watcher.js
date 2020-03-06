@@ -19,6 +19,8 @@ const restart_server = () => {
         exec(`npm i`, () => {
           exec(`tsc`, () => {
             exec(`npm start`, (err, out) => {
+              console.log(out);
+
               return out;
             });
           });
@@ -62,6 +64,6 @@ watcher
     log(`File ${path} has been removed`);
   })
   .on("ready", async () => {
-    log(await restart_server());
+    log(await start_server());
     ready = true;
   });
