@@ -28,11 +28,13 @@ jobs:
       - run: npm test
         env:
           CI: true
-      - name: ssh deploy
-        uses: easingthemes/ssh-deploy@v2.0.8
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@4.0
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          ARGS: "-rltgoDzvO --delete"
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.TARGET }}
+          switches: -avzr --delete --exclude="node_modules" --exclude="dist"
+          path: /
+          remote_path: ${{ secrets.TARGET }}
+          remote_host: ${{ secrets.REMOTE_HOST }}
+          remote_port: 22
+          remote_user: root
+          remote_key: ${{ secrets.DEPLOY_KEY }}
