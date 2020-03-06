@@ -7,19 +7,21 @@ const exec = util.promisify(require("child_process").exec);
 dotenv.config({ path: ".env.prod" });
 
 const watcher = chokidar.watch(path.join("."), {
-  ignored: ["dist", ".git", "package-lock.json"], // ignore dotfiles
+  ignored: ["dist", ".git", "package-lock.json", "node_modules"], // ignore dotfiles
   persistent: true
 });
 
 const log = console.log.bind(console);
 const restart_server = () => {
   return exec(`fuser -k ${process.env.PORT}/tcp`, () =>
-    exec(`npm i`, () =>
-      exec(`tsc`, () =>
-        exec(`npm start`, (err, out) => {
-          console.log(out);
-          return out;
-        })
+    exec(`rm -f package-lock.json`, () =>
+      exec(`npm i`, () =>
+        exec(`tsc`, () =>
+          exec(`npm start`, (err, out) => {
+            console.log(out);
+            return out;
+          })
+        )
       )
     )
   );
