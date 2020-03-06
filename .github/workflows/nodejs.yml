@@ -12,11 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [10.x, 12.x]
-
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -36,5 +34,5 @@ jobs:
           remote_path: ${{ secrets.TARGET }}
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_port: 22
-          remote_user: root
+          remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
