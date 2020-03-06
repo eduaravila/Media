@@ -7,7 +7,7 @@
     "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles",
     "dev": "concurrently -k \"tsc --watch\" \"nodemon -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.dev\"",
     "start": "node -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.prod",
-    "watch": "node -r watcher.js"
+    "watch": "node watcher.js"
   },
   "author": "Eduardo Avila",
   "license": "ISC",
