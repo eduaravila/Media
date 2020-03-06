@@ -28,12 +28,16 @@ jobs:
       - run: npm test
         env:
           CI: true
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@4.0
+      - name: Deploy to server
+        id: deploy
+        uses: Pendect/action-rsyncer@v1.1.0
+        env:
+          DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
         with:
-          switches: -avzr --delete
-          path: src/
-          remote_path: ${{ secrets.TARGET }}
-          remote_host: ${{ secrets.REMOTE_HOST }}
-          remote_user: ${{ secrets.REMOTE_USER }}
-          remote_key: ${{ secrets.DEPLOY_KEY }}
+          flags: '-avzr --delete'
+          options: ''
+          ssh_options: ''
+          src: ''
+          dest: 'root@[2001:19f0:5:5dd9:5400:02ff:fe99:6eb8]:/home/ecolote'
+      - name: Display status from deploy
+        run: echo "${{ steps.deploy.outputs.status }}"
