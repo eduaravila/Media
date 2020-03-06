@@ -36,5 +36,17 @@ jobs:
           remote_path: ${{ secrets.TARGET }}
           remote_host: ${{ secrets.REMOTE_HOST }}
           remote_port: 22
-          remote_user: root
+          remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            whoami
+            cd /home/ecolote
+            npm i
+            tsc
+            npm start  
