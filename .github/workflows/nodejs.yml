@@ -30,7 +30,7 @@ jobs:
           CI: true
       - name: ssh deploy
         uses: easingthemes/ssh-deploy@v2.0.8
-        with:
+        env:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           ARGS: "-rltgoDzvO --delete"
