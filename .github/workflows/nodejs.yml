@@ -36,19 +36,12 @@ jobs:
           remote_port: 22
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
-      - name: Operations
-        uses: alinz/ssh-scp-action@master
+      - name: Execute SSH commmands on remote server
+        uses: JimCronqvist/action-ssh@master
         with:
-          key: ${{ secrets.DEPLOY_KEY }}}
-          host: ${{ secrets.REMOTE_HOST }}
-          port: 22
-          user: ${{ secrets.REMOTE_USER }}
-          # runs this on remove server
-          ssh_before: |
-            cd /home/ecolote/
-            ls -ls
-            npm -v
-          ssh_after: |
-            cd /home/ecolote/
-            ls -ls
+          hosts: ${{ secrets.REMOTE_HOST }}
+          privateKey: ${{ secrets.DEPLOY_KEY }}
+          command: |
+            ls -lah
+            cd /home/ecolote
             npm -v
