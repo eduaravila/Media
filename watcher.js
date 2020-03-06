@@ -15,27 +15,14 @@ const log = console.log.bind(console);
 const restart_server = () => {
   return exec(`fuser -k ${process.env.PORT}/tcp`, () =>
     exec(`rm -f package-lock.json`, () =>
+    exec(`rm -fr node_modules`, () =>
       exec(`npm i`, () =>
-        exec(`tsc`, () =>
-          exec(`npm start`, (err, out) => {
-            console.log(out);
-            return out;
-          })
-        )
+        exec(`tsc`, () => {
+          return exec(`npm start`, { shell: true }).stdout;
+        })
       )
     )
   );
-};
-
-const start_server = async () => {
-  const { stdout, stderr } = await exec(`npm i`, { shell: true });
-  log(stdout);
-
-  return exec(`tsc`, { shell: true }, async () => {
-    const logServer = await (await exec(`npm start`, { shell: true })).stdout;
-    log("All good", logServer);
-    return Promise.resolve(logServer);
-  });
 };
 
 let ready = false;
