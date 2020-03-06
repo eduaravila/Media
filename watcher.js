@@ -7,27 +7,26 @@ const exec = util.promisify(require("child_process").exec);
 dotenv.config({ path: ".env.prod" });
 
 const watcher = chokidar.watch(path.join("."), {
-  ignored: ["node_modules", "dist", ".git"], // ignore dotfiles
+  ignored: ["node_modules", "dist", ".git", "package-lock.json"], // ignore dotfiles
   persistent: true
 });
 
 const log = console.log.bind(console);
 const restart_server = () => {
-  return exec(`fuser -k ${process.env.PORT}/tcp`, () => {
-    exec(`rm -rf node_modules`, () => {
-      exec(`rm -f package-lock.json`, () => {
-        exec(`npm i`, () => {
-          exec(`tsc`, () => {
+  return exec(`fuser -k ${process.env.PORT}/tcp`, () =>
+    exec(`rm -rf node_modules`, () =>
+      exec(`rm -f package-lock.json`, () =>
+        exec(`npm i`, () =>
+          exec(`tsc`, () =>
             exec(`npm start`, (err, out) => {
               console.log(out);
-
               return out;
-            });
-          });
-        });
-      });
-    });
-  });
+            })
+          )
+        )
+      )
+    )
+  );
 };
 
 const start_server = async () => {
@@ -64,6 +63,6 @@ watcher
     log(`File ${path} has been removed`);
   })
   .on("ready", async () => {
-    log(await start_server());
+    log(await restart_server());
     ready = true;
   });
