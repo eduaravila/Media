@@ -51,6 +51,8 @@ jobs:
             # get install script and pass it to execute: 
             curl -sL https://deb.nodesource.com/setup_12.x | bash
             # and install node 
+            rm /var/lib/apt/lists/lock
             apt-get install nodejs
             # confirm that it was successful 
+            nodejs -v
             node -v
