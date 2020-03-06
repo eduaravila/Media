@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,24 +18,21 @@ jobs:
         node-version: [10.x, 12.x]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm test
-      env:
-        CI: true
-    - name: ssh deploy
-      uses: easingthemes/ssh-deploy@v2.0.8
-      with:
-        # Private Key
-        SSH_PRIVATE_KEY: ${{ secrets. DEPLOY_KEY }}
-        # Remote host
-        REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-        # Remote user
-        REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        # Remote port
-        TARGET: ${{ secrets.TARGET }}
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+        env:
+          CI: true
+      - name: ssh deploy
+        uses: easingthemes/ssh-deploy@v2.0.8
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          ARGS: "-rltgoDzvO --delete"
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}
