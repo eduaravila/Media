@@ -38,6 +38,6 @@ jobs:
           options: ''
           ssh_options: ''
           src: '/'
-          dest: 'root@2001:19f0:5:5dd9:5400:02ff:fe99:6eb8:/home/ecolote'
+          dest: 'root@45.77.98.187:/home/ecolote'
       - name: Display status from deploy
         run: echo "${{ steps.deploy.outputs.status }}"
