@@ -36,19 +36,19 @@ jobs:
           remote_port: 22
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
-      - name: executing remote ssh commands using ssh key
-      - uses: appleboy/ssh-action@master
-      - uses: actions/setup-node@v1
+      - name: Operations
+        uses: alinz/ssh-scp-action@master
         with:
-          node-version: ${{ matrix.node-version }}
+          key: ${{ secrets.DEPLOY_KEY }}}
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          script: |
-            whoami
-            cd /home/ecolote
-            ls -la
+          port: 22
+          user: ${{ secrets.REMOTE_USER }}
+          # runs this on remove server
+          ssh_before: |
+            cd /home/ecolote/
+            ls -ls
             npm -v
-            npm install
-            tsc
-            npm start  
+          ssh_after: |
+            cd /home/ecolote/
+            ls -ls
+            npm -v
