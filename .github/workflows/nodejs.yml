@@ -12,11 +12,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [10.x, 12.x]
-
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
@@ -39,8 +37,10 @@ jobs:
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
       - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@master
+      - uses: appleboy/ssh-action@master
+      - uses: actions/setup-node@v1
         with:
+          node-version: ${{ matrix.node-version }}
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.DEPLOY_KEY }}
@@ -48,7 +48,7 @@ jobs:
             whoami
             cd /home/ecolote
             ls -la
-            /root/.nvm/versions/node/v13.10.1/bin/npm -v
-            /root/.nvm/versions/node/v13.10.1/bin/npm i
+            npm -v
+            npm install
             tsc
             npm start  
