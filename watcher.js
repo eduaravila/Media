@@ -25,6 +25,19 @@ const restart_server = async () => {
     return error;
   }
 };
+const start_server = async () => {
+  try {
+    await exec(`npm i`);
+    await exec(`tsc`);
+    await exec(`npm start`);
+    log("All good");
+    return Promise.resolve(true);
+  } catch (error) {
+    log(error);
+
+    return error;
+  }
+};
 
 let ready = false;
 // Something to use when events are received.
@@ -50,7 +63,7 @@ watcher
   })
   .on("ready", async () => {
     try {
-      await restart_server();
+      await start_server();
       ready = true;
     } catch (error) {
       log(error);
