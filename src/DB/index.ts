@@ -3,12 +3,24 @@ import mongoose from "mongoose";
 const connect_db = async () => {
   try {
     mongoose.set("useCreateIndex", true);
-    let db = await mongoose.connect(`mongodb://127.0.0.1:27017/media`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-    return Promise.resolve({ msg: "Data base conected", db });
+
+    let db = process.env.DEV
+      ? await mongoose.connect(`mongodb://127.0.0.1:27017/auth_root`, {
+          useNewUrlParser: true,
+          useUnifiedTopology: true
+        })
+      : await mongoose.connect(
+          `mongodb+srv://ECOLOTE:${process.env.DB_PASS}@cluster0-u30oq.mongodb.net/media`,
+          {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+          }
+        );
+
+    return Promise.resolve({ msg: "Data base conected" });
   } catch (error) {
+    console.log(error);
+
     Promise.reject("Error with the data base conection");
   }
 };

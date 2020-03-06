@@ -33,3 +33,19 @@ export const get_image = [
       }
     })
 ];
+
+export const get_article_image = [
+  check("token")
+    .exists()
+    .isJWT()
+    .custom(async (val: string) => {
+      console.log(val);
+
+      try {
+        let localToken = await JwtMedia.validateToken(val);
+        return true;
+      } catch (error) {
+        throw error;
+      }
+    })
+];
