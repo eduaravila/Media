@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles",
-    "dev": "concurrently -k \"tsc --watch\" \"nodemon -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.dev\""
+    "dev": "concurrently -k \"tsc --watch\" \"nodemon -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.dev\"",
+    "start": "node -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.prod"
   },
   "author": "Eduardo Avila",
   "license": "ISC",
