@@ -23,9 +23,12 @@ const restart_server = async () => {
 const start_server = async () => {
   const { stdout, stderr } = await exec(`npm i`, { shell: true });
   log(stdout);
-  await exec(`tsc`, { shell: true });
-  const logServer = await (await exec(`npm start`, { shell: true })).stdout;
-  log("All good", logServer);
+
+  exec(`tsc`, { shell: true }, async () => {
+    const logServer = await (await exec(`npm start`, { shell: true })).stdout;
+    log("All good", logServer);
+  });
+
   return Promise.resolve(true);
 };
 
