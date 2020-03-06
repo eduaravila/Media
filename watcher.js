@@ -1,7 +1,10 @@
 const chokidar = require("chokidar");
 const path = require("path");
 const util = require("util");
+const dotenv = require("dotenv");
 const exec = util.promisify(require("child_process").exec);
+
+dotenv.config({ path: ".env.prod" });
 
 const watcher = chokidar.watch(path.join("."), {
   ignored: ["node_modules", "dist", ".git"], // ignore dotfiles
