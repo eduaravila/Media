@@ -1,11 +1,14 @@
 const chokidar = require("chokidar");
 const path = require("path");
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
 const watcher = chokidar.watch(path.join("."), {
   ignored: ["node_modules", "dist", ".git"], // ignore dotfiles
   persistent: true
 });
 
+const log = console.log.bind(console);
 const restart_server = async () => {
   try {
     await exec(`fuser -k ${process.env.PORT}/tcp`);
@@ -14,15 +17,17 @@ const restart_server = async () => {
     await exec(`npm i`);
     await exec(`tsc`);
     await exec(`npm start`);
+    log("All good");
     return Promise.resolve(true);
   } catch (error) {
+    log(error);
+
     return error;
   }
 };
 
 let ready = false;
 // Something to use when events are received.
-const log = console.log.bind(console);
 // Add event listeners.
 watcher
   .on("add", async (path, stats) => {
