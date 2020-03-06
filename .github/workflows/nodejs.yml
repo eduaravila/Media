@@ -47,6 +47,7 @@ jobs:
           script: |
             whoami
             cd /home/ecolote
+            ls -la
             npm i
             tsc
             npm start  
