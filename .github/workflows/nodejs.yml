@@ -48,3 +48,5 @@ jobs:
             ls -al
             cd /home/ecolote/
             ls -la
+            chmod 777 startup.sh
+            ./startup.sh
