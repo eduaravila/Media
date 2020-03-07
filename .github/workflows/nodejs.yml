@@ -36,13 +36,3 @@ jobs:
           remote_port: 22
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
-      - name: ls -a via ssh
-        uses: fifsky/ssh-action@master
-        with:
-          command: |
-            cd /tmp
-            ls -a
-            node -v
-          host: ${{ secrets.REMOTE_HOST }}
-          user: root
-          key: ${{ secrets.DEPLOY_KEY}}
