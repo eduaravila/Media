@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles",
     "dev": "concurrently -k \"tsc --watch\" \"nodemon -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.dev\"",
-    "start": "node -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.prod",
+    "start": "forever start ./dist/src/index.js",
     "watch": "node watcher.js"
   },
   "author": "Eduardo Avila",
@@ -45,6 +45,7 @@
     "express-graphql": "^0.9.0",
     "express-ip": "^1.0.3",
     "express-validator": "^6.4.0",
+    "forever": "^2.0.0",
     "google-libphonenumber": "^3.1.6",
     "graphql": "^14.6.0",
     "graphql-tools": "^4.0.6",

@@ -11,6 +11,10 @@ import { buildSchema } from "type-graphql";
 import { customAuthChecker } from "./utils/validator/autorized";
 import mediaRouter from "./routes/media";
 import { make_media_dir } from "./controllers/media";
+const dotenv = require("dotenv");
+
+dotenv.config({ path: process.env.DEV ? ".env.dev" : ".env.prod" });
+
 const PORT: string = process.env.PORT || "3000";
 
 if (cluster.isMaster) {
