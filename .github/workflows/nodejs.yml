@@ -36,17 +36,13 @@ jobs:
           remote_port: 22
           remote_user: ${{ secrets.REMOTE_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
-      - name: multiple command
-        uses: appleboy/ssh-action@master
+      - name: ls -a via ssh
+        uses: fifsky/ssh-action@master
         with:
+          command: |
+            cd /tmp
+            ls -a
+            node -v
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.DEPLOY_KEY }}
-          port: 22
-          script: |
-            whoami
-            ls -al
-            cd /home/ecolote/
-            ls -la
-            chmod 777 startup.sh
-            ./startup.sh
+          user: root
+          key: ${{ secrets.DEPLOY_KEY}}
