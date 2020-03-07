@@ -6,7 +6,7 @@ const exec = util.promisify(require("child_process").exec);
 
 dotenv.config({ path: ".env.prod" });
 
-const watcher = chokidar.watch(path.join("."), {
+const watcher = chokidar.watch(path.join("..", "ecolote"), {
   ignored: ["dist", ".git", "package-lock.json", "node_modules"], // ignore dotfiles
   persistent: true
 });
@@ -14,12 +14,12 @@ const watcher = chokidar.watch(path.join("."), {
 const log = console.log.bind(console);
 const restart_server = () => {
   return exec(`fuser -k ${process.env.PORT}/tcp`, () =>
-    exec(`rm -f package-lock.json`, () =>
-      exec(`rm -fr node_modules/`, () =>
-        exec(`npm i`, () =>
-          exec(`npm rebuild`, () =>
-            exec(`tsc`, () => {
-              return exec(`npm start`, { shell: true }).stdout;
+    exec(`cd ../ecolote && rm -f package-lock.json`, () =>
+      exec(`cd ../ecolote && rm -fr node_modules/`, () =>
+        exec(`cd ../ecolote && npm i`, () =>
+          exec(`cd ../ecolote && npm rebuild`, () =>
+            exec(`cd ../ecolote && tsc`, () => {
+              return exec(`cd ../ecolote && npm start`, { shell: true }).stdout;
             })
           )
         )
