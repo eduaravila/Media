@@ -47,9 +47,7 @@ export class MediaResolver {
   }
 
   @Authorized("ADMIN")
-  @Mutation(() => SuccessResponseArray, {
-    description: "Admin function"
-  })
+  @Mutation(() => SuccessResponseArray)
   async uploadArticleAdmin(
     @Arg("file", () => [GraphQLUpload])
     files: [FileUpload],
