@@ -15,11 +15,14 @@ const log = console.log.bind(console);
 const restart_server = () => {
   return exec(`fuser -k ${process.env.PORT}/tcp`, () =>
     exec(`rm -f package-lock.json`, () =>
-    exec(`rm -fr node_modules`, () =>
-      exec(`npm i`, () =>
-        exec(`tsc`, () => {
-          return exec(`npm start`, { shell: true }).stdout;
-        })
+      exec(`rm -fr node_modules/`, () =>
+        exec(`npm i`, () =>
+          exec(`npm rebuild`, () =>
+            exec(`tsc`, () => {
+              return exec(`npm start`, { shell: true }).stdout;
+            })
+          )
+        )
       )
     )
   );
