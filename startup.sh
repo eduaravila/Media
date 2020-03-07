@@ -1,3 +1,7 @@
 #! /bin/bash
 cd /home/ecolote
-npm run watch
+pwd
+npm i
+npm rebuild
+tsc
+npm start
