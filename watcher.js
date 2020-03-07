@@ -6,10 +6,11 @@ const exec = util.promisify(require("child_process").exec);
 
 dotenv.config({ path: ".env.prod" });
 
-const watcher = chokidar.watch(path.join("..", "ecolote"), {
+const watcher = chokidar.watch(path.join("..","ecolote"), {
   ignored: ["dist", ".git", "package-lock.json", "node_modules"], // ignore dotfiles
   persistent: true
 });
+
 
 const log = console.log.bind(console);
 const restart_server = () => {
