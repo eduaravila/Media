@@ -48,5 +48,3 @@ jobs:
             ls -al
             cd /home/ecolote/
             ls -la
-              
-        :  
