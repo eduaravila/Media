@@ -28,17 +28,18 @@ export const addMediaAdmin = async (files: [FileUpload], ctx: any) => {
       await files.map(async (file: any) => {
         const { createReadStream, filename, mimetype } = await file;
 
-        const semiTransparentRedPng = sharp()
-          .resize(1200)
-          .png();
+        const semiTransparentRedPng = sharp().resize(1200);
 
         let final = ".png";
         if (mimetype == "image/png") {
           final = ".png";
+          semiTransparentRedPng.png();
         } else if (mimetype == "image/jpg") {
           final = ".jpg";
+          semiTransparentRedPng.jpeg();
         } else if (mimetype == "image/jpeg") {
           final = ".jpeg";
+          semiTransparentRedPng.jpeg();
         } else {
           throw new ApolloError("File extension not valid");
         }

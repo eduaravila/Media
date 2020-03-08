@@ -67,9 +67,41 @@ class Token {
     });
   }
 
+  create_token_consume() {
+    return new Promise(async (resolve, reject) => {
+      this.data = { ...(await this._crypt_data()()) };
+
+      try {
+        this.token = await jwt.sign(
+          this.data,
+          process.env.SECRET_MEDIA_CONSUME,
+          {
+            algorithm: "HS256",
+            issuer: process.env.APP_NAME,
+            audience: "GENERAL"
+          }
+        );
+
+        resolve(this.token);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
   static validateToken(token: string) {
     try {
       return Promise.resolve(jwt.verify(token, process.env.SECRET_MEDIA));
+    } catch (err) {
+      return Promise.reject(err);
+    }
+  }
+
+  static validateTokenConsume(token: string) {
+    try {
+      return Promise.resolve(
+        jwt.verify(token, process.env.SECRET_MEDIA_CONSUME)
+      );
     } catch (err) {
       return Promise.reject(err);
     }
