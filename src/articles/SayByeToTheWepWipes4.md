@@ -13,7 +13,7 @@
     Si no te es posible dejar de utilizar este producto. 
 
  :sparkles: **Evita tirar las toallas húmedas a el alcantarillado, WC, escusado, lavabo etc**
-![plastic pollution](http://localhost:3000/image/bermuda-no-message.png/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVMkZzZEdWa1gxK3dla2NHUEkxdHRsYTZIdHZpNGhlakJuaTAvQzN4UjBBOHMvNFBycjBNclRzYjA0OFBYa3RlIiwiaWF0IjoxNTgzNDUzMTU0LCJleHAiOjE1ODUyNjc1NTQsImF1ZCI6IkdFTkVSQUwiLCJpc3MiOiJFQ09MT1RFIn0.hV9IwjVNkYrG8L0lyBcA6HETw6CxzAAf5vg-iyOGvBc)
+![plastic pollution](http://localhost:3000/image/bermuda-no-message.png/{{token}})
 
 
 ----

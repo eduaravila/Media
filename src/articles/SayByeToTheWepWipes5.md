@@ -12,7 +12,7 @@
 
  :sparkles: **Utiliza alguna prenda vieja que sepas que no vestirás mas, dale una segunda vida a tu ex camisa favorita.**
 
-![plastic pollution](http://localhost:3000/image/icons8-towel-512.png/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVMkZzZEdWa1gxK3dla2NHUEkxdHRsYTZIdHZpNGhlakJuaTAvQzN4UjBBOHMvNFBycjBNclRzYjA0OFBYa3RlIiwiaWF0IjoxNTgzNDUzMTU0LCJleHAiOjE1ODUyNjc1NTQsImF1ZCI6IkdFTkVSQUwiLCJpc3MiOiJFQ09MT1RFIn0.hV9IwjVNkYrG8L0lyBcA6HETw6CxzAAf5vg-iyOGvBc)
+![plastic pollution](http://localhost:3000/image/icons8-towel-512.png/{{token}})
 
 
 ----

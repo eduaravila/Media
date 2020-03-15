@@ -11,5 +11,5 @@ De acuerdo con **Wikipedia**
 
  :heavy_exclamation_mark: *todo esto llega a los océanos*
 
-![Fatberg](http://localhost:3000/image/Fatberg_at_Museum_of_London.jpg/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJVMkZzZEdWa1gxK3dla2NHUEkxdHRsYTZIdHZpNGhlakJuaTAvQzN4UjBBOHMvNFBycjBNclRzYjA0OFBYa3RlIiwiaWF0IjoxNTgzNDUzMTU0LCJleHAiOjE1ODUyNjc1NTQsImF1ZCI6IkdFTkVSQUwiLCJpc3MiOiJFQ09MT1RFIn0.hV9IwjVNkYrG8L0lyBcA6HETw6CxzAAf5vg-iyOGvBc)
+![Fatberg](http://localhost:3000/image/Fatberg_at_Museum_of_London.jpg/{{token}})
 
