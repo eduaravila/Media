@@ -12,7 +12,7 @@
 
  :sparkles: **Compra productos reusables.**
 
-![plastic pollution](http://localhost:3000/image/icons8-t-shirt-512.png/{{token}})
+![plastic pollution](http://45.77.98.187:3007/image/icons8-t-shirt-512.png/{{token}})
 
 
 ----
