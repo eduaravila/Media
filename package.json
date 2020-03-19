@@ -7,7 +7,8 @@
     "test": "jest --setupFiles dotenv/config --forceExit --detectOpenHandles",
     "dev": "concurrently -k \"tsc --watch\" \"nodemon -r dotenv/config ./dist/src/index.js dotenv_config_path=./.env.dev\"",
     "start": "forever start ./dist/src/index.js",
-    "watch": "node watcher.js"
+    "watch": "node watcher.js",
+    "preinstall": "npx npm-force-resolutions"
   },
   "author": "Eduardo Avila",
   "license": "ISC",
@@ -64,6 +65,9 @@
     "type-graphql": "^0.18.0-beta.10",
     "uuid": "^7.0.1",
     "validator": "12.0.0"
+  },
+  "resolutions": {
+    "fs-capacitor": "5.0.0"
   },
   "devDependencies": {
     "ts-loader": "^6.2.1",
