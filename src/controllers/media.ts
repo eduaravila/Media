@@ -132,6 +132,7 @@ export const addArticleAdmin = async (files: [FileUpload], ctx: any) => {
 export const addMedia = async (files: [FileUpload], ctx: any) => {
   try {
     let token = ctx.req.headers.token;
+    console.log(token);
 
     let localToken = await JwtMedia.validateToken(token);
 
@@ -193,11 +194,13 @@ export const addMedia = async (files: [FileUpload], ctx: any) => {
     let justNames = [...names.map(i => i.name)];
 
     return Promise.resolve({
-      msg: justNames,
+      msg: null,
       code: "200",
       token: ticketToken.token
     });
   } catch (error) {
+    console.log("eeeor2", error);
+
     throw new ApolloError(error);
   }
 };

@@ -34,40 +34,40 @@ if (cluster.isWorker) {
       // Initialize the app
       const app = express();
 
-      app.use(
-        /\/((?!graphql).)*/,
-        bp.urlencoded({
-          limit: "50mb",
-          extended: true
-        })
-      );
-      app.use(
-        /\/((?!graphql).)*/,
-        bp.json({
-          limit: "50mb"
-        })
-      );
-      app.use(express_user_ip().getIpInfoMiddleware); //* get the user location data
-      app.use((req, res, next) => {
-        res.setHeader("Access-Control-Allow-Origin", "*"); //* dominios por donde se permite el acceso
-        res.setHeader(
-          "Access-Control-Allow-Methods",
-          "POST,GET,DELETE,UPDATE,PUT"
-        ); //* metodos permitidos por el cliente
-        res.setHeader(
-          "Access-Control-Allow-Headers",
-          "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,token"
-        );
-        //* dominios por donde se permite el acceso
-        //* graph ql no envia una respuesta valida con el tipo options, cuando hay un tipo de request OPTIONS se retorna una respuesta con el estado 200
-        // * graphql does not send a valid response when the OPTIONS request is received, if a OPTIONS request type is presented server return an empty response with the code 200
+      // app.use(
+      //   /\/((?!graphql).)*/,
+      //   bp.urlencoded({
+      //     limit: "50mb",
+      //     extended: true
+      //   })
+      // );
+      // app.use(
+      //   /\/((?!graphql).)*/,
+      //   bp.json({
+      //     limit: "50mb"
+      //   })
+      // );
+      // app.use(express_user_ip().getIpInfoMiddleware); //* get the user location data
+      // app.use((req, res, next) => {
+      //   res.setHeader("Access-Control-Allow-Origin", "*"); //* dominios por donde se permite el acceso
+      //   res.setHeader(
+      //     "Access-Control-Allow-Methods",
+      //     "POST,GET,DELETE,UPDATE,PUT"
+      //   ); //* metodos permitidos por el cliente
+      //   res.setHeader(
+      //     "Access-Control-Allow-Headers",
+      //     "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,token"
+      //   );
+      //   //* dominios por donde se permite el acceso
+      //   //* graph ql no envia una respuesta valida con el tipo options, cuando hay un tipo de request OPTIONS se retorna una respuesta con el estado 200
+      //   // * graphql does not send a valid response when the OPTIONS request is received, if a OPTIONS request type is presented server return an empty response with the code 200
 
-        if (req.method === "OPTIONS") {
-          res.sendStatus(200);
-        }
-        next();
-      });
-      const httpServer = createServer(app);
+      //   if (req.method === "OPTIONS") {
+      //     res.sendStatus(200);
+      //   }
+      //   next();
+      // });
+      app.use(mediaRouter);
       const server = new ApolloServer({
         schema: await buildSchema({
           resolvers: [MediaResolver],
@@ -76,12 +76,14 @@ if (cluster.isWorker) {
 
         context: req => req,
         formatError: err => {
+          console.log(err);
+
           return err;
         }
       });
       // The GraphQL endpoint
       server.applyMiddleware({ app, path: "/graphql" });
-      app.use(mediaRouter);
+      const httpServer = createServer(app);
 
       // Start the server
       await connectDB();
