@@ -131,6 +131,8 @@ export const addArticleAdmin = async (files: [FileUpload], ctx: any) => {
 
 export const addMedia = async (files: [FileUpload], ctx: any) => {
   try {
+    console.log(ctx);
+
     let token = ctx.req.headers.token;
     console.log(token);
 
