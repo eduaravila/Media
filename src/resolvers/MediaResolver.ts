@@ -23,7 +23,6 @@ import {
   addMediaAdmin,
   addArticleAdmin
 } from "../controllers/media";
-import { ApolloError } from "apollo-server-express";
 
 @Resolver()
 export class MediaResolver {
