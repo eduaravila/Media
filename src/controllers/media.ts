@@ -4,19 +4,18 @@ import { createWriteStream, existsSync, mkdirSync, unlinkSync } from "fs";
 import path from "path";
 import os from "os";
 import { v4 } from "uuid";
-import { GraphQLUpload, FileUpload } from "graphql-upload";
 import sharp from "sharp";
 import { validationResult } from "express-validator";
 import mediaModel from "../models/media";
 
-import { findInput, SuccessResponseArray } from "../schema/MediaSchema";
+import { findInput, SuccessResponseArray, Upload } from "../schema/MediaSchema";
 import JwtAdmin from "../utils/jwtAdmin";
 import JwtMedia from "../utils/jwtMedia";
 import jwtTicket from "../utils/jwtTicket";
 import { media_dir, public_dir, articles_dir } from "../utils/dirs";
 import { decrypt, encrypt } from "../utils/crypt";
 
-export const addMediaAdmin = async (files: [FileUpload], ctx: any) => {
+export const addMediaAdmin = async (files: [Upload], ctx: any) => {
   try {
     let token = ctx.req.headers.token;
 
@@ -80,7 +79,7 @@ export const addMediaAdmin = async (files: [FileUpload], ctx: any) => {
   }
 };
 
-export const addArticleAdmin = async (files: [FileUpload], ctx: any) => {
+export const addArticleAdmin = async (files: [Upload], ctx: any) => {
   try {
     let token = ctx.req.headers.token;
 
@@ -129,7 +128,7 @@ export const addArticleAdmin = async (files: [FileUpload], ctx: any) => {
   }
 };
 
-export const addMedia = async (files: [FileUpload], ctx: any) => {
+export const addMedia = async (files: [Upload], ctx: any) => {
   try {
     console.log(ctx);
 
@@ -196,7 +195,7 @@ export const addMedia = async (files: [FileUpload], ctx: any) => {
     let justNames = [...names.map(i => i.name)];
 
     return Promise.resolve({
-      msg: null,
+      msg: justNames,
       code: "200",
       token: ticketToken.token
     });

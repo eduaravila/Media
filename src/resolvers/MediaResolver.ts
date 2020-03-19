@@ -14,7 +14,8 @@ import {
   Media,
   findInput,
   SuccessResponseArray,
-  SuccessResponseTicket
+  SuccessResponseTicket,
+  Upload
 } from "../schema/MediaSchema";
 import {
   addMedia,
@@ -23,23 +24,30 @@ import {
   addMediaAdmin,
   addArticleAdmin
 } from "../controllers/media";
+import { ApolloError } from "apollo-server-express";
 
 @Resolver()
 export class MediaResolver {
   @Mutation(() => SuccessResponseTicket)
   async uploadImage(
     @Arg("file", () => [GraphQLUpload])
-    files: [FileUpload],
+    files: [Upload],
     @Ctx() ctx: any
   ) {
-    return await addMedia(files, ctx);
+    console.log(files);
+
+    try {
+      return await addMedia(files, ctx);
+    } catch (error) {
+      throw new ApolloError(error);
+    }
   }
 
   @Authorized("ADMIN")
   @Mutation(() => SuccessResponseArray)
   async uploadImageAdmin(
     @Arg("file", () => [GraphQLUpload])
-    files: [FileUpload],
+    files: [Upload],
     @Ctx() ctx: any
   ) {
     return await addMediaAdmin(files, ctx);
@@ -49,7 +57,7 @@ export class MediaResolver {
   @Mutation(() => SuccessResponseArray)
   async uploadArticleAdmin(
     @Arg("file", () => [GraphQLUpload])
-    files: [FileUpload],
+    files: [Upload],
     @Ctx() ctx: any
   ) {
     return await addArticleAdmin(files, ctx);

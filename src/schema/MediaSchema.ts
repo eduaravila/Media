@@ -15,6 +15,7 @@ import {
   Sanitize
 } from "class-sanitizer";
 import mediaModel from "../models/media";
+import { Stream } from "stream";
 
 @SanitizerConstraint()
 export class toLowerCase implements SanitizerInterface {
@@ -52,7 +53,12 @@ export class SuccessResponseTicket {
   @Field(type => String)
   code?: string;
 }
-
+export interface Upload {
+  filename: string;
+  mimetype: string;
+  encoding: string;
+  createReadStream: () => Stream;
+}
 @Directive(`@key(fields:"_id")`)
 @ObjectType()
 export class Media {
