@@ -10,7 +10,7 @@ import {
 let router = Router();
 router.get("/image/:id/:token", get_article_image, get_image_controller);
 
-router.get("/public/:id", get_image, get_public);
+router.get("/public/:id/:token", get_image, get_public);
 
 router.get("/article/:id", get_article_image, get_article);
 
