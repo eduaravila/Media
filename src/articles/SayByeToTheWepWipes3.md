@@ -9,3 +9,4 @@ Existen muchas toallas húmedas que se hacen llamar biodegradable o [compostable
 > Si analizas las toallas húmedas son un cuadro de telas sintéticas impregnado con una formula química.  
 
  ​🔊​ **Pensamos que la mejor solución es dejar de utilizar estos productos o disminuir su uso a un mínimo**
+
