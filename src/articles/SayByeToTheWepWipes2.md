@@ -1,10 +1,10 @@
-[by]: <> (Eduardo avila)
-[date]: <> (8 de marzo 2020)
-[title]: <> (Di adios a las toallas humedas)
+[by]: <> "Eduardo avila"
+[date]: <> "8 de marzo 2020"
+[title]: <> "Di adios a las toallas húmedas"
 
-Ademas de causar problemas con el alcantarillado, pueden llegar a los oceanos.
+Además de causar problemas con el alcantarillado, pueden llegar a los océanos.
 
- :heavy_exclamation_mark: *Esto en combinación con otros tipos de [solución por plásticos](https://link) pueden causar problemas a largo plazo para la flora y fauna de los océanos*
+❗ *Esto en combinación con otros tipos de [polución por plásticos](https://es.wikipedia.org/wiki/Poluci%C3%B3n_por_pl%C3%A1stico pueden causar problemas a largo plazo para la flora y fauna de los océanos*
 
 ![plastic pollution](http://45.77.98.187:3007/image/Plastic_Pollution_in_Ghana.jpg/{{token}})
 
