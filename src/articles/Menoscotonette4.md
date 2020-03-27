@@ -13,5 +13,5 @@
 **Si no te es posible dejar de utilizar este producto.**
 
  🌟 **Evita tirar cotonetes o bastoncillos de algodón de plastico  a el alcantarillado, WC, escusado, lavabo etc**
-![plastic pollution](http://45.77.98.187:3007/image/bermuda-no-message.png/{{token}})
+![sea horse](http://45.77.98.187:3007/image/seahosecotton.jpg/{{token}})
 
