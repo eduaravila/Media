@@ -13,3 +13,4 @@
  🌟 **Intenta utilizar [copas menstruales](https://www.thelancet.com/journals/lanpub/article/PIIS2468-2667(19)30111-2/fulltext), un producto no tan nuevo que resurgido en popularidad **
 
  🌟 **Algunas compañías están intentando innovar en la ropa interior para que esta absorba, y pueda ser lavada y reutilizada una y otra vez**
+
